@@ -29,7 +29,8 @@ def email():
     else:
         return jsonify({"status": "failed", "message": "Wrong data type"})
 
-    if 'message' not in data and 'receiver' not in data:
+    print(data)
+    if 'message' not in data or 'receiver' not in data:
         return jsonify({"status": "failed", "message": "Required fields are missing"})
     
     result = send_the_email(data["message"], data["receiver"])
