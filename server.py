@@ -3,12 +3,17 @@ Notification server to send the email to the user using the email server
 """
 
 
-from flask import Flask, request, jsonify
-from email_module import send_the_email
+from os import environ
+
+from flask import Flask, jsonify, request
+
+from postmarkapp_client import send_the_email
 
 app = Flask(__name__)
 
-@app.route("/")
+AUTH_TOKEN = environ.get("AUTH_TOKEN")
+
+@app.get("/")
 def index():
     """
     Home page of the server to check if the server is running
@@ -17,27 +22,37 @@ def index():
     return "Hello World"
 
 
-@app.route("/email", methods=["POST"])
+@app.post("/email")
 def email():
     """
     Receive the message and receiver from the user and 
     send the email to the receiver using the email server
     """
-    
-    if request.headers.get("Content-Type") == "application/json":
-        data = request.json
-    else:
-        return jsonify({"status": "failed", "message": "Wrong data type"})
 
-    print(data)
-    if 'message' not in data or 'receiver' not in data:
-        return jsonify({"status": "failed", "message": "Required fields are missing"})
+    auth_header = request.headers.get("Authorization")
+
+    if not auth_header:
+        msg = {"status": "failure", "message": "No Authorization header found"}
+        return jsonify(msg), 401
     
-    result = send_the_email(data["message"], data["receiver"])
-    if result:
-        return jsonify({"status": "success", "message": "Email sent successfully"})
+    __token = auth_header.split(" ")[1]
+
+    if __token != AUTH_TOKEN:
+        msg = {"status": "failure", "message": "Invalid token"}
+        return jsonify(msg), 401
+    
+    data = request.get_json()
+    print(data)
+
+    if send_the_email(data["receiver"], data["subject"], data["message"]):
+        return jsonify({"status": "success", "message": "Email sent successfully"}), 200
     else:
-        return jsonify({"status": "failed", "message": "Email sending failed"})
+        return jsonify({"status": "failed", "message": "Email sending failed"}), 400
+
+@app.post("/sms")
+def sms():
+    msg = {"status": "failure", "message": "Not implemented yet"}
+    return jsonify(msg), 400
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

@@ -1,10 +1,11 @@
 import logging
+import os
 import socket
 from logging.handlers import SysLogHandler
-import os
 
 HOST_ADDRESS = os.environ.get("HOST_ADDRESS")
 HOST_PORT = int(os.environ.get("HOST_PORT"))
+
 
 class ContextFilter(logging.Filter):
     hostname = socket.gethostname()
@@ -17,9 +18,9 @@ class ContextFilter(logging.Filter):
 syslog = SysLogHandler(address=(HOST_ADDRESS, HOST_PORT))
 syslog.addFilter(ContextFilter())
 app_name = os.path.basename(os.getcwd())
-format = "{asctime} | {hostname} | {filename} | {funcName} | {lineno} | {message}"
+log_format = "{asctime} | {hostname} | {filename} | {funcName} | {lineno} | {message}"
 
-formatter = logging.Formatter(format, style="{")
+formatter = logging.Formatter(log_format, style="{")
 syslog.setFormatter(formatter)
 logger = logging.getLogger()
 logger.addHandler(syslog)

@@ -1,16 +1,33 @@
-import requests
+"""
+Module to send email using Postmarkapp email server API
+"""
+
 from os import environ
 
-url = "https://api.postmarkapp.com/email"
+import requests
+
+# API documentation: https://postmarkapp.com/developer/api/email-api
+
 API_KEY = environ.get("POSTMARKAPP_API_KEY")
+
+url = "https://api.postmarkapp.com/email"
 
 headers = {"Accept": "application/json", "Content-Type": "application/json", "X-Postmark-Server-Token": API_KEY}
 
 
-def send_the_email(recipient, subject, message):
+def send_the_email(receiver: list, subject: str, message: str) -> bool:
+    """Function to send the email to the user using the email server
+
+    Keyword arguments:
+    receiver -- list of email addresses of the receiver
+    subject -- subject of the email
+    message -- message of the email
+    Return: True if email sent successfully else False
+    """
+
     json = {
         "From": "hello@djcicd.co",
-        "To": recipient,
+        "To": ", ".join(receiver),
         "Subject": subject,
         "TextBody": message,
     }
@@ -20,10 +37,7 @@ def send_the_email(recipient, subject, message):
     print(response.status_code)
     print(response.text)
 
-    if response.status_code == 200:
-        return True
-    else:
-        return False
+    return response.status_code == 200
 
 
 if __name__ == "__main__":
