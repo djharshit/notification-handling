@@ -3,8 +3,8 @@ import os
 import socket
 from logging.handlers import SysLogHandler
 
-HOST_ADDRESS = os.environ.get("HOST_ADDRESS")
-HOST_PORT = int(os.environ.get("HOST_PORT"))
+HOST_ADDRESS = os.environ.get("PAPERTRAIL_HOST_ADDRESS")
+HOST_PORT = int(os.environ.get("PAPERTRAIL_HOST_PORT"))
 
 
 class ContextFilter(logging.Filter):

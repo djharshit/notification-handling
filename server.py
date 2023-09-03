@@ -7,6 +7,7 @@ from os import environ
 
 from flask import Flask, jsonify, request
 
+from betterstack_logging import logger
 from postmarkapp_client import send_the_email
 
 app = Flask(__name__)
@@ -32,12 +33,14 @@ def email():
     auth_header = request.headers.get("Authorization")
 
     if not auth_header:
+        logger.error("No Authorization header found")
         msg = {"status": "failure", "message": "No Authorization header found"}
         return jsonify(msg), 401
     
     __token = auth_header.split(" ")[1]
 
     if __token != AUTH_TOKEN:
+        logger.error("Invalid token")
         msg = {"status": "failure", "message": "Invalid token"}
         return jsonify(msg), 401
     
@@ -45,8 +48,10 @@ def email():
     print(data)
 
     if send_the_email(data["receiver"], data["subject"], data["message"]):
+        logger.info(f"Receiver: {data['receiver']}, Subject: {data['subject']}, Sent successfully")
         return jsonify({"status": "success", "message": "Email sent successfully"}), 200
     else:
+        logger.warning(f"Receiver: {data['receiver']}, Subject: {data['subject']}, Failed to send")
         return jsonify({"status": "failed", "message": "Email sending failed"}), 400
 
 @app.post("/sms")
@@ -55,4 +60,5 @@ def sms():
     return jsonify(msg), 400
 
 if __name__ == "__main__":
+    logger.info("Starting the notification server")
     app.run(host="0.0.0.0", port=5000, debug=True)
