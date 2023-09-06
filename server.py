@@ -8,7 +8,7 @@ from os import environ
 from flask import Flask, jsonify, request
 
 from betterstack_logging import logger
-from postmarkapp_client import send_the_email
+from smtp2go_client import send_the_email
 
 app = Flask(__name__)
 
