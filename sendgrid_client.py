@@ -30,7 +30,7 @@ def send_the_email(receiver: list, subject: str, message: str) -> bool:
 
     json = {
         "personalizations": [{"to": []}],
-        "from": {"email": "email@harshitm.tv", "name": "Harshit Email"},
+        "from": {"email": "info@djcicd.co", "name": "Info"},
         "subject": subject,
         "content": [{"type": "text/plain", "value": message}],
     }

@@ -26,7 +26,7 @@ def send_the_email(receiver: list, subject: str, message: str) -> bool:
     """
 
     json = {
-        "From": "hello@djcicd.co",
+        "From": "info@djcicd.co",
         "To": ", ".join(receiver),
         "Subject": subject,
         "TextBody": message,
