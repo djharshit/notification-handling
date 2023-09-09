@@ -3,7 +3,6 @@ Module to send email using Elasticemail email server API
 """
 
 from os import environ
-from re import S
 
 import requests
 
