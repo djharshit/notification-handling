@@ -7,6 +7,7 @@ from os import environ
 
 from flask import Flask, jsonify, request
 
+from logging_module import logger
 from smtp2go_client import send_the_email
 
 app = Flask(__name__)
