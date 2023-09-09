@@ -7,7 +7,7 @@ from logtail import LogtailHandler
 
 # Initialising the logger
 logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 # Papertrail Logging
 HOST_ADDRESS = environ.get("PAPERTRAIL_HOST_ADDRESS")
