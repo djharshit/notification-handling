@@ -12,7 +12,11 @@ API_KEY = environ.get("POSTMARKAPP_API_KEY")
 
 url = "https://api.postmarkapp.com/email"
 
-headers = {"Accept": "application/json", "Content-Type": "application/json", "X-Postmark-Server-Token": API_KEY}
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "X-Postmark-Server-Token": API_KEY,
+}
 
 
 def send_the_email(receiver: list, subject: str, message: str) -> bool:

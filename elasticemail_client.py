@@ -26,10 +26,10 @@ def send_the_email(receiver: list, subject: str, message: str) -> bool:
     """
 
     json = {
-        "Recipients": {"To": receiver}, 
+        "Recipients": {"To": receiver},
         "Content": {
             "Body": [{"ContentType": "PlainText"}],
-        }
+        },
     }
 
     response = requests.post(url=url, headers=headers, json=json)
