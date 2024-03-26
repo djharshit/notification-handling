@@ -11,7 +11,7 @@ logger.setLevel(logging.INFO)
 
 # Papertrail Logging
 HOST_ADDRESS = environ.get("PAPERTRAIL_HOST_ADDRESS")
-HOST_PORT = int(environ.get("PAPERTRAIL_HOST_PORT"))
+HOST_PORT = int(environ.get("PAPERTRAIL_HOST_PORT", 0))
 
 
 class ContextFilter(logging.Filter):

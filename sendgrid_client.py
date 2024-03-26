@@ -1,20 +1,15 @@
 """
 Module to send email using Sendgrid email server API
+API documentation: https://apidoc.smtp2go.com/documentation/
 """
 
 from os import environ
-
 import requests
 
-# API documentation: https://apidoc.smtp2go.com/documentation/
-
-API_KEY = environ.get("SENDGRID_API_KEY")
-
 url = "https://api.sendgrid.com/v3/mail/send"
-
 headers = {
     "Content-Type": "application/json",
-    "Authorization": f"Bearer {API_KEY}",
+    "Authorization": f"Bearer {environ.get("SENDGRID_API_KEY")}",
 }
 
 
@@ -30,7 +25,7 @@ def send_the_email(receiver: list, subject: str, message: str) -> bool:
 
     json = {
         "personalizations": [{"to": []}],
-        "from": {"email": "info@djcicd.co", "name": "Info"},
+        "from": {"email": "info@kese.dev", "name": "Info"},
         "subject": subject,
         "content": [{"type": "text/plain", "value": message}],
     }
@@ -47,4 +42,4 @@ def send_the_email(receiver: list, subject: str, message: str) -> bool:
 
 
 if __name__ == "__main__":
-    send_the_email("hm0092374@gmail.com", "Test", "This is a test email")
+    send_the_email(["info@djharshit.dev"], "Test", "This is a test email")

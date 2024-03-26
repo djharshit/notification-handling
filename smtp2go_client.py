@@ -1,18 +1,12 @@
 """
 Module to send email using SMTP2GO email server API
+API documentation: https://apidoc.smtp2go.com/documentation/
 """
 
-
 from os import environ
-
 import requests
 
-# API documentation: https://apidoc.smtp2go.com/documentation/
-
-API_KEY = environ.get("SMTP2GO_API_KEY")
-
 url = "https://api.smtp2go.com/v3/email/send"
-
 headers = {"Content-Type": "application/json"}
 
 
@@ -26,7 +20,7 @@ def send_the_email(reciever: list, subject: str, message: str) -> bool:
     Return: True if email sent successfully else False
     """
 
-    json = {"api_key": API_KEY, "to": reciever, "sender": "Info <info@djcicd.co>", "subject": subject, "text_body": message}
+    json = {"api_key": environ.get("SMTP2GO_API_KEY"), "to": reciever, "sender": "Info <info@kese.dev>", "subject": subject, "text_body": message}
 
     response = requests.post(url=url, json=json, headers=headers)
 
@@ -37,4 +31,4 @@ def send_the_email(reciever: list, subject: str, message: str) -> bool:
 
 
 if __name__ == "__main__":
-    send_the_email("hm0092374@gmail.com", "Test", "This is a test email")
+    send_the_email(["info@djharshit.dev"], "Test", "This is a test email")
