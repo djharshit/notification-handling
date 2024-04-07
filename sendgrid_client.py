@@ -4,6 +4,7 @@ API documentation: https://apidoc.smtp2go.com/documentation/
 """
 
 from os import environ
+
 import requests
 
 url = "https://api.sendgrid.com/v3/mail/send"

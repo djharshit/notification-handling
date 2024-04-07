@@ -33,14 +33,14 @@ def email():
     auth_header = request.headers.get("Authorization")
 
     if not auth_header:
-        logger.error("No Authorization header found")
+        logger.warning("No Authorization header found")
         msg = {"status": "failure", "message": "No Authorization header found"}
         return jsonify(msg), 401
 
     __token = auth_header.split(" ")[1]
 
     if __token != AUTH_TOKEN:
-        logger.error("Invalid token")
+        logger.warning("Invalid token")
         msg = {"status": "failure", "message": "Invalid token"}
         return jsonify(msg), 401
 
@@ -48,20 +48,23 @@ def email():
     print(data)
 
     if send_the_email(data["receiver"], data["subject"], data["message"]):
-        logger.info(f"Receiver: {data['receiver']}, Subject: {data['subject']}, Sent successfully")
+        logger.info(f"Receiver: {data['receiver']}, Subject: {data['subject']}, Message: {data['message']}, Email sent successfully")
         return jsonify({"status": "success", "message": "Email sent successfully"}), 200
     else:
-        logger.warning(f"Receiver: {data['receiver']}, Subject: {data['subject']}, Failed to send")
+        logger.warning(f"Receiver: {data['receiver']}, Subject: {data['subject']}, Message: {data['message']}, Email sending failed")
         return jsonify({"status": "failed", "message": "Email sending failed"}), 400
 
 
 @app.post("/sms")
 def sms():
-    logger.info("POST /sms Not implemented yet")
+    """
+    Send the SMS to the user using the SMS server
+    """
+    logger.warning("POST /sms Not implemented yet")
     msg = {"status": "failure", "message": "Not implemented yet"}
     return jsonify(msg), 400
 
 
 if __name__ == "__main__":
     logger.info("Starting the notification server")
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5001, debug=True)
